@@ -1,7 +1,7 @@
 import streamlit as st
 
 st.title("""
-    # Prediksi Kelayakan Nasabah
+     Prediksi Kelayakan Nasabah
     **Pada Bank Perkreditan Rakyat Syariah**
 """)
 
@@ -55,27 +55,56 @@ names = ['Kurang Lancar','Lancar']
 st.sidebar.header('User Input Parameters')
 
 def user_input_features():
-    status_pernikahan = st.sidebar.selectbox("Status Pernikahan",("Sudah Menikah","Belum Menikah","Janda","Duda"))
-    jenis_kelamin = st.sidebar.selectbox("Jenis Kelamin",(""))
-    asuransi = st.sidebar.selectbox("Asuransi",(""))
-    pekerjaan = st.sidebar.selectbox("Pekerjaan",(""))
-    gaji_pribadi = st.sidebar.selectbox("Penghasilan Pribadi",(""))
-    gaji_pasangan = st.sidebar.selectbox("Penghasilan Pasangan",(""))
-    usia = st.sidebar.selectbox("Usia",(""))
-    jumlah_pembiayaan = st.sidebar.selectbox("Jumlah Peminjamaan",(""))
-    jangka_waktu = st.sidebar.selectbox("Jangka Waktu Pembayaran",(""))
-    lama_usaha = st.sidebar.selectbox("Lama Usaha",(""))
-    pinjaman_ditempat_lain == st.sidebar.selectbox("Pinjaman di Tempat Lain",(""))
+    status_pernikahan = st.sidebar.slider('status_pernikahan', 0, 3, 1)
+    jenis_kelamin = st.sidebar.slider('jenis_kelamin', 0, 1, 1)
+    asuransi = st.sidebar.slider('asuransi', 0, 1, 1)
+    pekerjaan = st.sidebar.slider('pekerjaan', 0, 10, 1)
+    gaji_pribadi = st.sidebar.slider('gaji_pribadi', 0, 14, 1)
+    gaji_pasangan = st.sidebar.slider('gaji_pasangan', 0, 7, 1)
+    usia = st.sidebar.slider('usia', 0, 9, 1)
+    jumlah_pembiayaan = st.sidebar.slider('jumlah_pembiayaan', 0, 15, 1)
+    jangka_waktu = st.sidebar.slider('jangka_waktu', 0, 16, 1)
+    lama_usaha = st.sidebar.slider('lama_usaha', 0, 9, 1)
+    pinjaman_ditempat_lain = st.sidebar.slider('pinjaman_ditempat_lain', 0, 1, 1)
 
-    datax = {'sepal_length': sepal_length,
-            'sepal_width': sepal_width,
-            'petal_length': petal_length,
-            'petal_width': petal_width}
+    datax = {'status_pernikahan': status_pernikahan,
+            'jenis_kelamin': jenis_kelamin,
+            'asuransi (ya atau tidak)': asuransi,
+            'pekerjaan': pekerjaan,
+            'gaji_pribadi': gaji_pribadi,
+            'gaji_pasangan': gaji_pasangan,
+            'usia': usia,
+            'jumlah_pembiayaan': jumlah_pembiayaan,
+            'jangka_waktu': jangka_waktu,
+            'lama_usaha': lama_usaha,
+            'pinjaman_ditempat_lain': pinjaman_ditempat_lain}
     features = pd.DataFrame(datax, index=[0])
     return features
 
+df = user_input_features()
+
+st.subheader('User Input parameters')
+st.write(df)
+
+prediction = best.predict(df)
+prediction_proba = best.predict_proba(df)
+
+st.subheader('Class labels and their corresponding index number')
+st.write(pd.DataFrame({
+  'Label': ['Kurang Lancar','Lancar']}))
+
+def test():
+    st.info("Lancar")
+
+def test2():
+    st.info("Kurang Lancar")
 
 
-auc = roc_auc_score(y_test, y_pred)
-st.subheader("Nilai AUC")
-st.write(auc)
+st.subheader('Prediction')
+if prediction == 1:
+    test()
+else:
+    test2()
+
+st.subheader('Prediction Probability')
+st.write(prediction_proba)
